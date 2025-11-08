@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Asientos</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+    <header>
+            <a href="Index.html" class="logo">
+                <img src="images/theater.png" alt="Home" />
+            </a>
+            <h1>AUDITORIO BELLAS ARTES</h1>
+            <h3>Función: <i id="titulo-funcion"></i></h3>
+
+    </header>
+    <main>
+        <section class="info">
+
+            <div>
+                <a class="volver" href="Index.html">
+                    <img src="images/back.png">
+                </a>
+                <a href="reservaciones.html">Ver reservaciones</a>
+
+            </div>
+
+            <h3>Nueva reservación</h3>
+            <label for="cliente">Nombre del cliente:</label><input id="cliente" type="text" required>
+
+            <div class="contenedor-boletos"></div>
+
+            <div class="totales">
+                <span>Asientos:</span>
+                <span id="cantidad-asientos">0</span>
+            </div>
+
+            <div class="totales"> 
+                <span class="total">Total a pagar:</span>
+                <span class="total">$<i id="total-pagar">0</i></span>
+            </div>
+
+            <button id="btnConfirmarReserva">Confirmar</button>
+
+            <button id="btnLimpiarSeleccion" class="btnCancelar">Cancelar</button>
+
+        </section>
+
+        <section class="mapa">
+            <div id="escenario">ESCENARIO</div>
+            <div id="gridAsientos"></div>
+        </section>
+
+
+
+    </main>
+
+    <script>
+
+
+        const gridAsientos = document.getElementById("gridAsientos");
+        const inputNombre = document.getElementById("cliente");
+        const contenedorBoletos = document.querySelector(".contenedor-boletos");
+        const spanCantidad = document.getElementById("cantidad-asientos");
+        const spanTotalPagar = document.getElementById("total-pagar");
+        const btnConfirmar = document.getElementById("btnConfirmarReserva");
+        const btnCancelar = document.getElementById("btnLimpiarSeleccion");
+
+        const funcion = localStorage.getItem("tituloFuncion");
+        document.getElementById("titulo-funcion").textContent = funcion;
+
+        const claveAsientos = `asientos_${funcion}`;
+        const claveReservas = `reservas_${funcion}`;
+
+        function guardarAsientos() {
+            localStorage.setItem(claveAsientos, JSON.stringify(asientos));
+        }
+
+        //recuperar asientos, si no encuentra, generarlos
+        let asientos = JSON.parse(localStorage.getItem(claveAsientos));
+        if (!asientos) {
+            asientos = [];
+            for (let i = 1; i <= 80; i++) {
+                asientos.push({
+                    id: i,
+                    tipo: i <= 20 ? "preferencial" : "general",
+                    precio: i <= 20 ? 1200 : 800,
+                    seleccionado: false,
+                    reservado: false,
+                    cliente: null
+                });
+            }
+            guardarAsientos();
+        }
+
+        //divs de asientos
+        asientos.forEach(a => {
+            const div = document.createElement("div");
+            div.classList.add("asiento");
+            div.textContent = a.id;
+            div.dataset.id = a.id;
+            div.dataset.precio = a.precio;
+            if (a.tipo === "preferencial") {
+                div.classList.add("preferencial");
+            }
+            if (a.reservado) {
+                div.classList.add("reservado");
+                div.textContent = "X"
+            }
+
+            gridAsientos.appendChild(div);
+        });
+
+        function guardarReservas() {
+            const aReservados = asientos.filter(a => a.cliente);
+
+            const reservasPorCliente = aReservados.reduce((acumulador, asiento) => {
+                let existente = acumulador.find(reserva => reserva.cliente == asiento.cliente);
+                if (!existente) {
+                    acumulador.push({
+                        cliente: asiento.cliente,
+                        asientos: [asiento.id],
+                        total: asiento.precio
+                    });
+                } else {
+                    existente.asientos.push(asiento.id);
+                    existente.total += asiento.precio;
+                }
+                return acumulador;
+            }, []);
+
+            localStorage.setItem(claveReservas, JSON.stringify(reservasPorCliente));
+        }
+
+        guardarReservas();
+
+        function actualizarBoletos() {
+            contenedorBoletos.innerHTML = "";
+            let total = 0;
+            let contador = 0;
+
+            const seleccionados = asientos.filter(a => a.seleccionado && !a.reservado);
+
+            // Mostrar/ocultar los divs de totales
+            const totalesDivs = document.querySelectorAll('.totales');
+            if (seleccionados.length === 0) {
+                totalesDivs.forEach(div => div.style.display = 'none');
+            } else {
+                totalesDivs.forEach(div => div.style.display = '');
+            }
+
+            seleccionados.forEach(a => {
+                contador++;
+
+                const boletoDiv = document.createElement("div");
+                boletoDiv.classList.add("boleto");
+
+                const infoDiv = document.createElement("div");
+
+                const spanAsiento = document.createElement("span");
+                spanAsiento.innerHTML = `Asiento: <strong>${a.id}</strong>`;
+
+                const spanTipo = document.createElement("span");
+                spanTipo.textContent = a.tipo === "preferencial" ? "Preferencial" : "General";
+
+                infoDiv.appendChild(spanAsiento);
+                infoDiv.appendChild(spanTipo);
+
+                const precioSpan = document.createElement("span");
+                precioSpan.innerHTML = '$<i class="precio">' + a.precio + '</i>';
+
+                boletoDiv.appendChild(infoDiv);
+                boletoDiv.appendChild(precioSpan);
+
+                contenedorBoletos.appendChild(boletoDiv);
+
+                total += a.precio;
+            });
+
+            spanCantidad.textContent = contador;
+            spanTotalPagar.textContent = total;
+        }
+
+        actualizarBoletos()
+        
+        //seleccionar boletos
+        gridAsientos.addEventListener("click", function (e) {
+            const div = e.target.closest(".asiento");
+            if (!div || div.classList.contains("reservado"))
+                return;
+
+            const id = parseInt(div.dataset.id);
+            const asiento = asientos.find(a => a.id === id);
+
+            if (asiento.seleccionado) {
+                asiento.seleccionado = false;
+                div.classList.remove("seleccionado");
+            }
+            else if (!asiento.reservado) {
+
+                const seleccionados = asientos.filter(a => a.seleccionado).length;
+                if (seleccionados >= 8) {
+                    alert("No puedes seleccionar más de 8 asientos por transacción.");
+                    return;
+                }
+
+                asiento.seleccionado = true;
+                div.classList.add("seleccionado");
+            }
+
+            actualizarBoletos();
+        });
+
+        //cancelar
+        btnCancelar.addEventListener("click", function () {
+            asientos.forEach(a => a.seleccionado = false);
+            gridAsientos.querySelectorAll(".asiento.seleccionado").forEach(div => div.classList.remove("seleccionado"));
+            actualizarBoletos();
+        })
+
+        //confirmar
+        btnConfirmar.addEventListener("click", function () {
+            if (!inputNombre.value.trim()) {
+                alert("Introduzca el nombre del cliente para confirmar la reserva");
+                return;
+            }
+
+            const seleccionados = asientos.filter(x => x.seleccionado);
+            seleccionados.forEach(a => {
+                a.cliente = inputNombre.value;
+                a.reservado = true;
+                a.seleccionado = false;
+            })
+
+            gridAsientos.querySelectorAll(".asiento.seleccionado").forEach(div => {
+                div.classList.remove("seleccionado");
+                div.classList.add("reservado");
+                div.textContent = "x";
+            });
+
+            actualizarBoletos();
+            guardarAsientos();
+            guardarReservas();
+            inputNombre.value = "";
+            alert("Reserva registrada correctamente");
+
+
+        })
+
+
+
+
+    </script>
+</body>
+
+</html>

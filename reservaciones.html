@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservaciones</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+    <header>
+        <a href="Index.html" class="logo">
+            <img src="images/theater.png" alt="Home" />
+        </a>
+        <h1>AUDITORIO BELLAS ARTES</h1>
+        <h3>Función: <i id="titulo-funcion"></i></h3>
+    </header>
+
+    <main>
+        <section class="info reservas">
+            <a href="asientos.html">Reservar asientos</a>
+
+            <h3>Reservaciones actuales</h3>
+
+            <div class="lista-reservaciones"></div>
+
+            <div class="estadisticas">
+                <div class="total-reservaciones">
+                    <span class="total">Total de reservaciones: </span>
+                    <span id="totalReservaciones" class="total"></span>
+                </div>
+
+                <div class="total-recaudado">
+                    <span class="total">Total recaudado: </span>
+                    <span class="total">$<i id="total-recaudado"></i></span>
+                </div>
+
+                
+            </div>
+            
+
+            <button id="btn-borrartodo">BORRAR TODAS</button>
+
+        </section>
+    </main>
+
+    <script>
+
+        const contenedor = document.querySelector(".lista-reservaciones");
+        const spanTotal = document.getElementById("totalReservaciones");
+        const spanRecaudado = document.getElementById("total-recaudado");
+
+        const funcion = localStorage.getItem("tituloFuncion");
+        document.getElementById("titulo-funcion").textContent = funcion;
+        const claveReservas = `reservas_${funcion}`;
+        const claveAsientos = `asientos_${funcion}`;
+
+        const btnLimpiar = document.getElementById("btn-borrartodo");
+
+        function mostrarReservas() {
+
+            contenedor.innerHTML = ""; 
+            let total = 0;
+            let recaudado = 0;
+            const reservas = JSON.parse(localStorage.getItem(claveReservas)) || [];
+            reservas.forEach((r, index) => {
+                const div = document.createElement("div");
+                div.classList.add("boleto", "lista");
+
+                const divInfo = document.createElement("div");
+                divInfo.innerHTML = `
+            <span>Cliente: <strong>${r.cliente}</strong></span>
+            <span>Asientos: <strong>${r.asientos.join(", ")}</strong></span>
+            `;
+
+                const divDerecha = document.createElement("div");
+                divDerecha.classList.add("precio-eliminar");
+                divDerecha.innerHTML = `
+            <span class="precio">$<i>${r.total}</i></span>
+            <button class="btn-eliminar" data-index="${index}">x</button>
+            `;
+
+                div.appendChild(divInfo);
+                div.appendChild(divDerecha);
+
+                contenedor.appendChild(div);
+
+                total++;
+                recaudado += Number(r.total);
+            });
+
+            document.querySelectorAll(".btn-eliminar").forEach(btn => {
+                btn.addEventListener("click", function (e) {
+                    const index = parseInt(e.target.dataset.index);
+                    EliminarReserva(index);
+                });
+            });
+
+            spanTotal.textContent = total;
+            spanRecaudado.textContent = recaudado;
+
+        }
+
+        mostrarReservas()
+
+        function EliminarReserva(index) {
+            let reservas = JSON.parse(localStorage.getItem(claveReservas)) || [];
+            let asientos = JSON.parse(localStorage.getItem(claveAsientos)) || [];
+
+            const reserva = reservas[index];
+
+            if (confirm(`¿Eliminar la reserva de ${reserva.cliente}?`)) {
+
+                reserva.asientos.forEach(id => {
+                    const asiento = asientos.find(a => a.id === id);
+                    if (asiento) {
+                        asiento.reservado = false;
+                        asiento.cliente = null;
+                    }
+                });
+
+                localStorage.setItem(claveAsientos, JSON.stringify(asientos));
+
+
+                reservas.splice(index, 1);
+                localStorage.setItem(claveReservas, JSON.stringify(reservas));
+
+                mostrarReservas();
+
+
+            }
+        }
+
+        btnLimpiar.addEventListener("click", function () {
+            if (confirm("¿Estás seguro de eliminar TODAS las reservas de esta función?")) {
+                let reservas = JSON.parse(localStorage.getItem(claveReservas)) || [];
+                let asientos = JSON.parse(localStorage.getItem(claveAsientos)) || [];
+
+                asientos.forEach(a => {
+                    a.reservado = false;
+                    a.cliente = null;
+                });
+
+                reservas = [];
+
+                localStorage.setItem(claveReservas, JSON.stringify(reservas));
+                localStorage.setItem(claveAsientos, JSON.stringify(asientos));
+
+                mostrarReservas();
+
+            }
+        })
+
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,446 @@
+:root{
+    --azulNeutro : #023E8A;
+    --azulHover : #CAF0F8;
+    --azulOscuro:#03045E;
+}
+
+html, body{
+    height: 100%;
+    width: 100%;
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+
+    color: white;
+    text-align: center;
+    position: relative;
+}
+header{
+    padding: 10px;
+    margin-bottom: 0px;
+    text-align: center;
+    position: relative;
+    background:var(--azulOscuro);
+}
+
+.logo {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 60px;
+    display: flex;
+    align-items: center;
+}
+.logo img {
+    height: 60px;
+    width: auto;
+    border-radius: 8px;
+    cursor: pointer;
+}
+.logo img:hover {
+    transform: scale(1.08);
+}
+
+
+main{
+    display: grid;
+    grid-template-columns: 30% 70%;
+
+}
+
+.contenedor-funciones{
+
+    grid-column: span 2;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px;
+    gap: 20px;
+    justify-content: center;
+    
+    
+
+}
+
+.contenedor-funciones .funcion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    gap: 8px;
+    text-align: center;
+    background-color: var(--azulOscuro);
+    border: 3px solid var(--azulOscuro);
+    padding: 10px 30px;
+    border-radius: 12px;
+    
+
+}
+
+.contenedor-funciones .funcion:hover{
+    transform: scale(1.03);
+}
+
+.contenedor-funciones .funcion img{
+    width: 220px;
+    height: 300px;
+    object-fit:fill;
+    border: 2px solid white;
+    display: flex;
+    align-self: flex-start;
+}
+
+.contenedor-funciones .funcion .titulo{
+    max-width: 200px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    
+    
+}
+
+.info{
+    grid-column: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    background: white;
+    gap: 10px;
+    
+    box-shadow: 6px 0 10px -8px var(--azulOscuro);
+    border-right: 2px solid var(--azulOscuro);
+}
+
+
+
+.info h3{
+    text-align: center;
+    font-size: 1.4rem;
+    color: var(--azulOscuro);
+    border-bottom: 2px solid var(--azulOscuro);
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+}
+
+.info a{
+    align-self: flex-end;
+    color: var(--azulOscuro);
+    text-decoration: none;
+    background-color: whitesmoke;
+    padding: 8px;
+    border: 2px solid var(--azulOscuro);
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.info a.volver{
+    
+    background: indianred;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.info span, .info label{
+    font-size: 1.2rem;
+    color: #023E8A;
+    font-weight: bold;
+}
+
+.info span.total{
+    font-size: 1.6rem;
+}
+
+
+
+.info input[type="text"]{
+    font-size: 1.1rem;
+    padding: 5px;
+    border: 2px solid var(--azulNeutro);
+    background: whitesmoke;
+    font-weight: 600;
+    border-radius: 8px;
+}
+.info a:hover, .info button:hover{
+    background-color: var(--azulHover);
+}
+
+.info img{
+
+    width: 20px;
+    height: 20px;
+}
+
+.contenedor-boletos{
+    display: flex;
+    flex-direction: column;
+}
+
+.info .boleto{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: whitesmoke;
+    border: 2px solid var(--azulNeutro);
+    border-radius: 8px;
+    padding: 8px 20px;
+    margin-bottom: 8px;
+
+}
+
+.info .boleto span{
+
+    font-size: 1rem;
+    color: black;
+}
+
+.info .boleto div{
+    display: flex;
+    flex-direction: column;
+}
+
+.info .boleto strong{
+    color: var(--azulOscuro);
+    font-weight:600 ;
+}
+
+.info button{
+    margin-top: 8px;
+    padding: 10px;
+    border: 2px solid var(--azulOscuro);
+    border-radius: 8px;
+    color: var(--azulOscuro);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.info .btnCancelar{
+    background: indianred;
+}
+
+.info .btnCancelar:hover{
+    background: lightcoral;
+}
+
+.info div{
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.mapa{
+    grid-column: 2;
+
+}
+
+#escenario{
+    margin: 20px;
+    padding: 12px;
+    border-radius: 8px;
+    width: 90%;
+    font-size: 1.2rem;
+    text-align: center;
+    justify-self: center;
+    background: var(--azulOscuro);
+    color: white;
+}
+
+#gridAsientos{
+    justify-self: center;
+    width: 100%;
+    max-width: 625px;
+    height: auto;
+    min-height: 300px;
+    background-color: whitesmoke;
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-template-rows: repeat(8, 1fr);
+    gap: 10px;
+    padding: 20px;
+    border: 2px solid var(--azulNeutro);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    box-sizing: border-box;
+}
+
+.asiento{
+    background: var(--azulNeutro);
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    color: white;
+    aspect-ratio: 1/1;
+    min-width: 0;
+    min-height: 0;
+}
+
+.asiento:hover{
+    transform: scale(1.1);
+}
+
+.asiento.preferencial{
+    background:goldenrod;
+}
+
+.asiento.seleccionado{
+    border: 4px solid green;
+}
+
+.asiento.reservado{
+    background: lightslategray;
+    cursor: default;
+}
+
+.asiento.reservado:hover{
+    transform: none;
+}
+
+
+.lista-reservaciones{
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    
+}
+
+.info.reservas{
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    border: none;
+        
+}
+
+.info.reservas a{
+ align-self: flex-start;
+ font-size: 1.2rem;
+
+}
+
+.info.reservas h3{
+    width: 60%;
+    font-size: 2rem;
+}
+
+.info.reservas{
+    display: flex;
+    justify-content: center;
+}
+
+.boleto.lista .precio{
+    color: var(--azulOscuro);
+}
+
+.boleto.lista{
+    justify-self: center;
+    padding: 16px 20px;
+}
+
+.boleto.lista div, .boleto.lista span{
+    font-size: 1.6rem;
+}
+
+#btn-borrartodo{
+    border-radius: 8px;
+    background: red; 
+    color: var(--azulOscuro);
+    cursor: pointer;
+}
+
+#btn-borrartodo:hover{
+    background: lightcoral;
+}
+
+.boleto.lista .btn-eliminar{
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: red; 
+    color: var(--azulOscuro);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    margin: 0;
+    
+    
+}
+.btn-eliminar:hover{
+    background: lightcoral;
+}
+
+.boleto.lista .precio-eliminar{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+}
+
+.info.reservas .estadisticas{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    width: 100%;
+
+}
+
+
+@media (max-width: 900px){
+    main {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        width: 100vw;
+        min-width: 0;
+        height: 100vh;
+    }
+    .info {
+        grid-row: 1;
+        grid-column: 1;
+        width: 100vw;
+        min-width: 0;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 16px;
+        overflow-y: visible;
+    }
+    .mapa {
+        grid-row: 2;
+        grid-column: 1;
+        width: 100vw;
+        min-width: 0;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0 8px;
+    }
+    #gridAsientos {
+        width: 100%;
+        max-width: 100vw;
+        min-width: 0;
+        height: auto;
+        padding: 10px;
+        margin: 0 auto 20px auto;
+    }
+
+    .asiento{
+        font-size: .6rem;
+    }
+
+    .lista-reservaciones{
+        width: 100%;
+    }
+
+    .boleto.lista div, .boleto.lista span{
+    font-size: 1.1rem;
+    }
+
+    .logo{
+        display: none;
+    }
+}

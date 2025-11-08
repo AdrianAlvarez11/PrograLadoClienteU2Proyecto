@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservar Asientos</title>
+    <link rel="stylesheet" href="estilos.css">
+</head>
+
+<body>
+    <header>
+            <a href="Index.html" class="logo">
+                <img src="images/theater.png" alt="Home" />
+            </a>
+            <h1>AUDITORIO BELLAS ARTES</h1>
+            <h3>Funciones disponibles:</h3>
+    </header>
+    <main>
+
+        <div class="contenedor-funciones">
+            <a href="asientos.html" class="funcion">
+                <img src="https://imgproxy.domestika.org/unsafe/w:820/plain/src://content-items/011/814/762/PROGRAMA-CARA-original.jpg?1658314618"
+                    alt="RomeoYJulieta">
+                <span class="titulo">Romeo y Julieta</span>
+                <span>Fecha: 23/10/2025</span>
+                <span>Clasificación: B</span>
+            </a>
+
+            <a href="asientos.html" class="funcion">
+                <img src="https://scontent.flov2-1.fna.fbcdn.net/v/t39.30808-6/486487326_1211228440362934_3006343749396208884_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=108&ccb=1-7&_nc_sid=127cfc&_nc_ohc=vjKNq0nFwMkQ7kNvwH5dKfv&_nc_oc=Admfe2t4gmEukGc0LscrzOlGlfFhyAZ5N64Bg9bBEqA2VyQHw55LbslMVkE-xxNwG7M&_nc_zt=23&_nc_ht=scontent.flov2-1.fna&_nc_gid=5xWXGAKkyZgXCGTvPKLsUw&oh=00_AfhEuWme3bewcurFJVrdi2TcM7T7ueyoaWOL-ZHvF0d7Ow&oe=691038DF"
+                    alt="AoT">
+                <span class="titulo">Attack on Titan Orquesta</span>
+                <span>Fecha: 29/10/2025</span>
+                <span>Clasificación: A</span>
+            </a>
+
+            <a href="asientos.html" class="funcion">
+                <img src="https://m.media-amazon.com/images/M/MV5BOGQ1N2VmMWUtMmMwZS00NjgzLTg1YTMtMTY2MTE4ZGExOWJiXkEyXkFqcGc@._V1_FMjpg_UY2916_.jpg"
+                    alt="Ernesto">
+                <span class="titulo">La importancia de llamarse Ernesto</span>
+                <span>Fecha: 20/11/2025</span>
+                <span>Clasificación: B</span>
+            </a>
+
+            <a href="asientos.html" class="funcion">
+                <img src="https://scontent.flov2-1.fna.fbcdn.net/v/t39.30808-6/506048322_1033686118924630_1467099517526341773_n.jpg?stp=dst-jpg_p526x296_tt6&_nc_cat=100&ccb=1-7&_nc_sid=833d8c&_nc_ohc=EfAa5PaityAQ7kNvwFiK-EO&_nc_oc=AdnOpEYCzBcAH4_JRnpb107xTEh5-vShuROco9T7j_q8uSz7WefysFkt2eCm0xFzenk&_nc_zt=23&_nc_ht=scontent.flov2-1.fna&_nc_gid=ekNQC7S8rCJLsQrwJskQjQ&oh=00_Afh6whREjmUUm7YBlBiOQ-_XbpmlmukskxZONuIzbAQKjA&oe=69105D12"
+                    alt="Infantil">
+                <span class="titulo">Show Infantil Lara Campos</span>
+                <span>Fecha: 21/11/2025</span>
+                <span>Clasificación: AA</span>
+            </a>
+        </div>
+
+    </main>
+
+    <script>
+
+        const contenedor = document.querySelector(".contenedor-funciones");
+
+        contenedor.addEventListener("click", function (e) {
+            const a = e.target.closest(".funcion");
+            if (!a) return;
+
+            const titulo = a.querySelector(".titulo").textContent;
+            localStorage.setItem("tituloFuncion", titulo);
+        });
+
+
+    </script>
+</body>
+
+</html>
